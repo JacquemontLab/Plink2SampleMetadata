@@ -220,7 +220,6 @@ awk -v OFS='\t' 'NR==FNR {
         print $2, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16 , a[$2]
      }' OFS='\t' ${tmpdir}king_output_InferredAncestry.txt ${tmpdir}king_outputpc.txt > ${output_file}
 
-
 rm -rf "$tmpdir"
 
 log_step "DONE: KING PCA analysis completed successfully."
