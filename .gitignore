@@ -1,0 +1,14 @@
+# Ignore Nextflow work directories and results
+work/
+results/
+output/
+logs/
+.nextflow/
+
+# Ignore test folders and files
+test/
+tests/
+*.log
+*.tmp
+*.temp
+report*
