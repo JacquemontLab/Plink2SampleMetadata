@@ -86,7 +86,7 @@ fi
 #--- Build merged TSV ---
 log_step "STEP: Creating merged output TSV"
 (
-    echo -e "SampleID\tCall_Rate\tSex"
+    echo -e "SampleID\tCall_Rate\tSexe"
     join -1 1 -2 1 \
         <(awk 'NR>1 {print $2, (1-$6)}' tmp_plink_outputs.imiss | sort -k1,1) \
         <(awk 'NR>1 {sex=($4==1?"male":($4==2?"female":"unknown")); print $2, sex}' tmp_plink_outputs.sexcheck | sort -k1,1) \
