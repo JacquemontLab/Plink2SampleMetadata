@@ -114,7 +114,7 @@ Below is a description of each column:
 | **Sex**        | Inferred biological sex (`male` / `female` / `unknown`) based on PLINK sex check.  |
 | **FatherID**   | Sample ID of the inferred father (if available).                       |
 | **MotherID**   | Sample ID of the inferred mother (if available).                       |
-| **FamilyID**   | Assigned family identifier (from KING trio inference).                 |
+| **FamilyID**   | Assigned family identifier for SampleID sharing same parents pair.     |
 | **PC1–PC10**   | Principal component values from KING-based PCA analysis.               |
 | **Ancestry**   | Inferred ancestry group based on PCA projection to the KING reference. |
 
