@@ -25,16 +25,30 @@ The workflow is designed for large-scale genomic data projects where accurate sa
 
 ## Outputs
 
-The pipeline produces the following files:
+The pipeline produces a merged metadata file:
+`results/merged_results.tsv`
 
-* `sex_callrate.tsv`
-  Per-sample sex call rate statistics.
-* `trio_inference.tsv`
-  Inferred family trios based on KING analysis.
-* `pca_inference.tsv`
-  PCA results with ancestry components using the KING reference.
-* `sample_metadata_from_plink.tsv`
-  Merged table of all above results.
+Below is a description of each column:
+
+| Column         | Description                                                            |
+| -------------- | ---------------------------------------------------------------------- |
+| **SampleID**   | Unique sample identifier from the PLINK dataset.                       |
+| **Call\_Rate** | Proportion of successfully called genotypes for the sample.            |
+| **Sex**        | Inferred biological sex (`male` / `female` / `unknown`) based on PLINK sex check.  |
+| **FatherID**   | Sample ID of the inferred father (if available).                       |
+| **MotherID**   | Sample ID of the inferred mother (if available).                       |
+| **FamilyID**   | Assigned family identifier for SampleID sharing same pair ofparents.   |
+| **PC1–PC10**   | Principal component values from KING-based PCA analysis.               |
+| **Ancestry**   | Inferred ancestry group based on PCA projection to the KING reference. |
+
+**Example (first lines):**
+
+```tsv
+SampleID    Call_Rate   Sex    FatherID   MotherID   FamilyID   PC1    PC2   ...   PC10   Ancestry
+SP000XXXX   0.97516     female                     -0.0101  0.0274 ... -0.0016  EUR
+SP000XXXY   0.97283     male   SP000XXXA  SP000XXXB Family2770 -0.0099  0.0272 ... -0.0017  EUR
+```
+
 
 ---
 
@@ -47,17 +61,38 @@ The pipeline produces the following files:
 * SLURM or another supported workload manager for cluster execution
 
 ---
+Here’s a clean, properly formatted version of your usage section:
+
+---
 
 ## Usage
 
-```bash
-nextflow run main.nf \
-    --plink_file /path/to/data/prefix \
-    --king_ref /path/to/king_reference_directory \
-    --genome_version GRCh38 \
-    -c setup/ccdb/ccdb.config \
-    -with-report report.html
+Given the following PLINK files:
+
 ```
+/path_to/plink.bim  
+/path_to/plink.bed  
+/path_to/plink.fam  
+```
+
+1. From the repository's root directory, run:
+
+   ```bash
+   setup/new_cluster/cluster_setup.sh
+   ```
+
+2. Then launch the pipeline with:
+
+   ```bash
+   setup/new_cluster/nextflow-run.sh /path_to/plink GRCh38
+   ```
+
+3. You may also review the script for customization or troubleshooting:
+
+   ```
+   setup/new_cluster/nextflow-run.sh
+   ```
+
 
 ### Parameters
 
@@ -104,27 +139,6 @@ nextflow run main.nf \
 
 The final merged metadata file is:
 `results/merged_results.tsv`
-
-Below is a description of each column:
-
-| Column         | Description                                                            |
-| -------------- | ---------------------------------------------------------------------- |
-| **SampleID**   | Unique sample identifier from the PLINK dataset.                       |
-| **Call\_Rate** | Proportion of successfully called genotypes for the sample.            |
-| **Sex**        | Inferred biological sex (`male` / `female` / `unknown`) based on PLINK sex check.  |
-| **FatherID**   | Sample ID of the inferred father (if available).                       |
-| **MotherID**   | Sample ID of the inferred mother (if available).                       |
-| **FamilyID**   | Assigned family identifier for SampleID sharing same pair ofparents.   |
-| **PC1–PC10**   | Principal component values from KING-based PCA analysis.               |
-| **Ancestry**   | Inferred ancestry group based on PCA projection to the KING reference. |
-
-**Example (first lines):**
-
-```tsv
-SampleID    Call_Rate   Sex    FatherID   MotherID   FamilyID   PC1    PC2   ...   PC10   Ancestry
-SP000XXXX   0.97516     female                     -0.0101  0.0274 ... -0.0016  EUR
-SP000XXXY   0.97283     male   SP000XXXA  SP000XXXB Family2770 -0.0099  0.0272 ... -0.0017  EUR
-```
 
 ---
 
