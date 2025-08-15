@@ -75,7 +75,7 @@ Given the following PLINK files:
 /path_to/plink.fam  
 ```
 
-1. From the repository's root directory, run:
+1. From the root directory of the repository, run the following command to install the required dependencies:
 
    ```bash
    setup/new_cluster/cluster_setup.sh
