@@ -121,8 +121,8 @@ nextflow run main.nf \
 
 ### Processes
 
-* **`infer_sexe_callrate`**
-  Runs `plink_sexe_callrate.sh` to estimate sex call rates per sample.
+* **`infer_sex_callrate`**
+  Runs `plink_sex_callrate.sh` to estimate sex call rates per sample.
 
 * **`infer_trio`**
   Uses `infer_king_trios.py` to infer trios from the genotype data.

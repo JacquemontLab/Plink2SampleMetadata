@@ -1,9 +1,9 @@
 #!/bin/bash
 #----------------------------------------------------------
-# Script: plink_sexe_callrate.sh
+# Script: plink_sex_callrate.sh
 # Description: Run PLINK QC (missingness + sex check) and
 #              output a single TSV file
-# Usage: ./plink_sexe_callrate.sh <plink_prefix> <output_file>
+# Usage: ./plink_sex_callrate.sh <plink_prefix> <output_file>
 #----------------------------------------------------------
 
 set -e  # Exit on any error
@@ -86,7 +86,7 @@ fi
 #--- Build merged TSV ---
 log_step "STEP: Creating merged output TSV"
 (
-    echo -e "SampleID\tCall_Rate\tSexe"
+    echo -e "SampleID\tCall_Rate\tSex"
     join -1 1 -2 1 \
         <(awk 'NR>1 {print $2, (1-$6)}' tmp_plink_outputs.imiss | sort -k1,1) \
         <(awk 'NR>1 {sex=($4==1?"male":($4==2?"female":"unknown")); print $2, sex}' tmp_plink_outputs.sexcheck | sort -k1,1) \

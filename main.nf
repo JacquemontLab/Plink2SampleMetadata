@@ -11,23 +11,23 @@ params.genome_version = "${params.genome_version ?: 'GRCh37'}" // default to GRC
 
 
 // ----------------------------------------------------------------------
-// Process: infer_sexe_callrate
+// Process: infer_sex_callrate
 // Purpose: Calculate sex call rate per sample using PLINK binary files.
 // Input: PLINK dataset prefix and associated files (.bed, .bim, .fam).
-// Output: TSV file with sex call rate per individual, emitted as 'sexe' channel.
+// Output: TSV file with sex call rate per individual, emitted as 'sex' channel.
 // ----------------------------------------------------------------------
-process infer_sexe_callrate {
-    label "infer_sexe"
+process infer_sex_callrate {
+    label "infer_sex"
 
     input:
     tuple val(plink_prefix), path(plink_files)                 // Path to the PLINK binary dataset (prefix of .bed/.bim/.fam files)
 
     output:
-    path "sex_callrate.tsv", emit: sexe  // Output file emitted as channel 'sexe'
+    path "sex_callrate.tsv", emit: sex  // Output file emitted as channel 'sex'
 
     script:
     """
-    plink_sexe_callrate.sh ${plink_prefix} sex_callrate.tsv
+    plink_sex_callrate.sh ${plink_prefix} sex_callrate.tsv
     """
 }
 
@@ -88,7 +88,7 @@ process merge_results {
     label 'merge_results'
 
     input:
-    path sexe
+    path sex
     path trio
     path pca
 
@@ -97,11 +97,61 @@ process merge_results {
 
     script:
     """
-    merge_tsv.py -i ${sexe} ${trio} ${pca} -o sample_metadata_from_plink.tsv -j full
+    merge_tsv.py -i ${sex} ${trio} ${pca} -o sample_metadata_from_plink.tsv -j full
     """
 }
 
 
+// Build a launch summary file with workflow metadata and timing
+process buildSummary {
+    label 'quick'
+    
+    input:
+    val cohort_tag
+    val plink_file
+    val genome_version
+    path last_outfile
+
+    output:
+    path "launch_report.txt"
+
+    script:
+    """
+        # Convert workflow start datetime to epoch seconds
+        start_sec=\$(date -d "${workflow.start}" +%s)
+        # Get current time in epoch seconds
+        end_sec=\$(date +%s)
+
+        # Calculate duration in seconds
+        duration=\$(( end_sec - start_sec ))
+
+        # Convert duration to minutes and seconds
+        minutes=\$(( duration / 60 ))
+        seconds=\$(( duration % 60 ))
+
+       cat <<EOF > launch_report.txt
+       Plink2SampleMetadata ${cohort_tag} run summary:
+       run name: ${workflow.runName}
+       version: ${workflow.manifest.version}
+       configs: ${workflow.configFiles}
+       workDir: ${workflow.workDir}
+       input_file: ${plink_file}
+       genome_version: ${genome_version}
+       launch_user: ${workflow.userName}
+       start_time: ${workflow.start}
+       duration: \${minutes} minutes and \${seconds} seconds
+
+       Command:
+       ${workflow.commandLine}
+
+    
+    """
+
+    stub:
+    """
+    touch launch_report.txt
+    """
+}
 
 
 workflow {
@@ -137,11 +187,19 @@ workflow {
         .value(params.genome_version)
         .set { genome_ch }
 
-    sexe_ch = infer_sexe_callrate(plink_ch)
+    sex_ch = infer_sex_callrate(plink_ch)
     trio_ch = infer_trio(plink_ch)
     pca_ch  = infer_pca(plink_ch, king_ref_ch, genome_ch)
 
-    merged_ch = merge_results(sexe_ch, trio_ch, pca_ch)
+    merged_ch = merge_results(sex_ch, trio_ch, pca_ch)
+
+
+    buildSummary(
+        "beta",
+        params.plink_file,
+        params.genome_version,
+        pca_ch
+    )
 
 
     publish:
