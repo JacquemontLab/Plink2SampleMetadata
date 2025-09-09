@@ -69,11 +69,18 @@ if [[ "$genome_version" == "GRCh38" ]]; then
 
     # Check if liftOver is available
     if ! command -v liftOver &> /dev/null; then
-        echo "liftOver not found — loading kentutils/453 module..."
-        module load StdEnv/2020 kentutils/401 
-    else
-        echo "liftOver available."
+        echo "liftOver not found — downloading UCSC binary into ~/bin..."
+        mkdir -p ~/bin
+        
+        # Download directly into ~/bin
+        wget -q -O ~/bin/liftOver http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver
+        chmod +x ~/bin/liftOver
+    
+        # Prepend only this binary to PATH
+        export PATH="$HOME/bin:$PATH"
     fi
+    
+    echo "Using liftOver from: $(command -v liftOver)"
 
     liftOver KGref_GRCh37_map.bed hg19ToHg38.over.chain.gz KGref_GRCh38.bed KGref_unmapped.bed
 
