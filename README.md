@@ -4,29 +4,79 @@
 
 ## Overview
 
-This Nextflow pipeline builds a **consolidated sample metadata table** from a PLINK binary dataset by performing:
+This Nextflow pipeline builds a **sample metadata table** from a PLINK binary dataset by performing:
 
 * **Sex call rate inference** with PLINK
 * **Trio inference** using KING
 * **Principal Component Analysis (PCA)** using a KING reference panel
 * **Merging results** into a single tab-delimited file (`sample_metadata_from_plink.tsv`)
 
-The workflow is designed for large-scale genomic data projects where accurate sample metadata is essential for downstream analyses.
 
----
+## Requirements
+
+Refer to the template config files and adjust them to match your infrastructure.
+
+Required software:
+
+* **Nextflow** – workflow engine (nextflow version 25.10.2)
+* **Docker** (Apptainer or Singularity) – to run containers
+
+You might need to pull the following containers if working **offline**:
+* docker://ghcr.io/jacquemontlab/plink2metadata:latest
+
+
 
 ## Inputs
 
-* **PLINK binary dataset** (prefix of `.bed`, `.bim`, `.fam` files)
-* **KING reference directory** (contains the KING reference plink files)
-* **Genome version** (`GRCh37` by default; `GRCh38` supported)
+| Parameter          | Description                                         | Default    |
+| ------------------ | --------------------------------------------------- | ---------- |
+| `--plink_file`     | Path prefix of PLINK dataset (.bed/.bim/.fam)       | *Required* |
+| `--king_ref`       | Path to KING reference directory                    | *Required* |
+| `--genome_version` | Genome version for PCA analysis (`GRCh37`/`GRCh38`) | GRCh37     |
 
----
+
+## Usage
+
+### Download required KING reference files
+
+From the root directory of the repository, run the following command to install the KING reference data
+(plink and liftOver are provided by the Docker image):
+
+```bash
+docker run --rm -it \
+  -v "$PWD":/project \
+  -w /project \
+  docker://ghcr.io/jacquemontlab/plink2metadata:latest \
+  bash INSTALL.sh
+```
+
+### Testing
+
+The pipeline can be tested using the test profile and the images hosted on github using the container of your choice. 
+
+```bash
+container=docker # or apptainer or singularity
+
+nextflow run https://github.com/JacquemontLab/Plink2SampleMetadata.git -profile test,${container}
+```
+
+<!-- nextflow run main.nf -profile test,${container} -->
+
+## Example
+
+```bash
+plink_file=tests/plink
+
+nextflow run main.nf \
+    --plink_file "$plink_file" \
+    --king_ref "$PWD"/resources/king_ref \
+    --genome_version GRCh38
+```
 
 ## Outputs
 
 The pipeline produces a merged metadata file:
-`results/merged_results.tsv`
+`results/sample_metadata_from_plink.tsv`
 
 Below is a description of each column:
 
@@ -50,73 +100,6 @@ SP000XXXY   0.97283     male   SP000XXXA  SP000XXXB Family2770 -0.0099  0.0272 .
 ```
 
 
----
-
-## Requirements
-
-* **Nextflow** (DSL2 enabled)
-* **PLINK** (in `$PATH`)
-* **KING** (in `$PATH`)
-* **Python ≥3.7** (with required scripts, e.g. `infer_king_trios.py`, `merge_tsv.py`)
-* SLURM or another supported workload manager for cluster execution
-
----
-Here’s a clean, properly formatted version of your usage section:
-
----
-
-## Usage
-
-Given the following PLINK files:
-
-```
-/path_to/plink.bim  
-/path_to/plink.bed  
-/path_to/plink.fam  
-```
-
-1. From the root directory of the repository, run the following command to install the required dependencies:
-
-   ```bash
-   setup/new_cluster/cluster_setup.sh
-   ```
-
-2. Then launch the pipeline with:
-
-   ```bash
-   setup/new_cluster/nextflow-run.sh /path_to/plink GRCh38
-   ```
-
-3. You may also review the script for customization or troubleshooting:
-
-   ```
-   setup/new_cluster/nextflow-run.sh
-   ```
-
-
-### Parameters
-
-| Parameter          | Description                                         | Default    |
-| ------------------ | --------------------------------------------------- | ---------- |
-| `--plink_file`     | Path prefix of PLINK dataset (.bed/.bim/.fam)       | *Required* |
-| `--king_ref`       | Path to KING reference directory                    | *Required* |
-| `--genome_version` | Genome version for PCA analysis (`GRCh37`/`GRCh38`) | GRCh37     |
-
----
-
-## Example
-
-```bash
-nextflow run main.nf \
-    --plink_file /lustre09/project/6008022/flben/Ancestry_SPARK/iWGS1.1/merged_plink/sample_data \
-    --king_ref /lustre09/project/6008022/LAB_WORKSPACE/RAW_DATA/Genetic/Reference_Data/king_ref \
-    --genome_version GRCh38 \
-    -c setup/ccdb/ccdb.config \
-    -resume
-```
-
----
-
 ## Workflow Structure
 
 ### Processes
@@ -132,24 +115,3 @@ nextflow run main.nf \
 
 * **`merge_results`**
   Merges outputs into a single metadata file using `merge_tsv.py`.
-
----
-
-## Merged Results File
-
-The final merged metadata file is:
-`results/merged_results.tsv`
-
----
-
-## Notes
-
-* The pipeline resumes by default (`-resume`), so reruns skip completed steps.
-* The KING reference directory must be consistent with the chosen genome version.
-* For HPC runs, see the example SLURM submission script (`run_plink_metadata.sh`).
-
-
-
-
-
-

@@ -1,13 +1,10 @@
 #!/usr/bin/env nextflow
 
 nextflow.enable.dsl=2
-nextflow.preview.output = true
 
 params.plink_file     = "${params.plink_file ?: ''}"
 params.king_ref       = "${params.king_ref   ?: ''}"
 params.genome_version = "${params.genome_version ?: 'GRCh37'}" // default to GRCh37
-
-
 
 
 // ----------------------------------------------------------------------
@@ -17,7 +14,6 @@ params.genome_version = "${params.genome_version ?: 'GRCh37'}" // default to GRC
 // Output: TSV file with sex call rate per individual, emitted as 'sex' channel.
 // ----------------------------------------------------------------------
 process infer_sex_callrate {
-    label "infer_sex"
 
     input:
     tuple val(plink_prefix), path(plink_files)                 // Path to the PLINK binary dataset (prefix of .bed/.bim/.fam files)
@@ -39,7 +35,6 @@ process infer_sex_callrate {
 // Output: TSV file listing inferred trios, emitted as 'trio' channel.
 // ----------------------------------------------------------------------
 process infer_trio {
-    label "infer_trio"
 
     input:
     tuple val(plink_prefix), path(plink_files)                 // Path to the PLINK binary dataset (prefix of .bed/.bim/.fam files)
@@ -60,7 +55,6 @@ process infer_trio {
 // Output: TSV file with PCA inference results, emitted as 'pca' channel.
 // ----------------------------------------------------------------------
 process infer_pca {
-    label "infer_pca"
 
     input:
     tuple val(plink_prefix), path(plink_files)                 // Path to the PLINK binary dataset (prefix of .bed/.bim/.fam files)
@@ -85,7 +79,6 @@ process infer_pca {
 // Output: Merged sample metadata TSV file.
 // ----------------------------------------------------------------------
 process merge_results {
-    label 'merge_results'
 
     input:
     path sex
@@ -104,10 +97,8 @@ process merge_results {
 
 // Build a launch summary file with workflow metadata and timing
 process buildSummary {
-    label 'quick'
     
     input:
-    val cohort_tag
     val plink_file
     val genome_version
     path last_outfile
@@ -130,7 +121,7 @@ process buildSummary {
         seconds=\$(( duration % 60 ))
 
        cat <<EOF > launch_report.txt
-       Plink2SampleMetadata ${cohort_tag} run summary:
+       Plink2SampleMetadata run summary:
        run name: ${workflow.runName}
        version: ${workflow.manifest.version}
        configs: ${workflow.configFiles}
@@ -195,7 +186,6 @@ workflow {
 
 
     buildSummary(
-        "beta",
         params.plink_file,
         params.genome_version,
         pca_ch

@@ -6,8 +6,6 @@ logs/
 .nextflow/
 
 # Ignore test folders and files
-test/
-tests/
 *.log
 *.tmp
 *.temp
