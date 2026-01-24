@@ -23,7 +23,6 @@
 # Requirements:
 #   - SLURM workload manager
 #   - Nextflow installed and configured
-#   - KING reference data directory available
 #
 # Usage:
 #   sbatch nextflow-run.sh <plink_file_prefix>
@@ -33,7 +32,6 @@
 #          /lustre09/project/6008022/flben/Ancestry_SPARK/iWGS1.1/merged_plink/sample_data
 ################################################################################
 
-KING_REF_DIRECTORY=/lustre09/project/6008022/LAB_WORKSPACE/RAW_DATA/Genetic/Reference_Data/king_ref
 
 # Ensure Nextflow runs offline (no internet check)
 export NXF_OFFLINE=true
@@ -44,7 +42,6 @@ module load nextflow
 # Run Nextflow pipeline
 nextflow run main.nf \
     --plink_file $1 \
-    --king_ref $KING_REF_DIRECTORY \
     --genome_version GRCh38 \
     -c setup/ccdb/ccdb.config \
     -with-report report.html \

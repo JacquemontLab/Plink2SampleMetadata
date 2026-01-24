@@ -46,7 +46,7 @@ From the root directory of the repository, run the following command to install 
 docker run --rm -it \
   -v "$PWD":/project \
   -w /project \
-  docker://ghcr.io/jacquemontlab/plink2metadata:latest \
+  ghcr.io/jacquemontlab/plink2metadata:latest \
   bash INSTALL.sh
 ```
 
@@ -57,7 +57,7 @@ The pipeline can be tested using the test profile and the images hosted on githu
 ```bash
 container=docker # or apptainer or singularity
 
-nextflow run https://github.com/JacquemontLab/Plink2SampleMetadata.git -profile test,${container}
+nextflow run main.nf -profile test,${container}
 ```
 
 ## Example
