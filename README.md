@@ -22,7 +22,7 @@ Required software:
 * **Docker** (Apptainer or Singularity) – to run containers
 
 You might need to pull the following containers if working **offline**:
-* docker://ghcr.io/jacquemontlab/plink2metadata:latest
+* **docker://ghcr.io/jacquemontlab/plink2metadata:latest**
 
 
 
