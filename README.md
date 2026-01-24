@@ -1,5 +1,7 @@
 [![Jacquemont's Lab Header](labheader.png)](https://www.jacquemont-lab.org/)
 
+[Git Repository CNV-Caller](https://github.com/JacquemontLab/Plink2SampleMetadata)
+
 # PLINK to Sample Metadata Workflow
 
 ## Overview
