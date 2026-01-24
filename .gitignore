@@ -9,7 +9,9 @@ logs/
 *.log
 *.tmp
 *.temp
+.nextflow*
 report*
+sandbox.sh
 !resources/king_ref/
 resources/king_ref/*
 !resources/king_ref/extraction_king_ref.sh

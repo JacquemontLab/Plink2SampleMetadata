@@ -4,7 +4,7 @@ nextflow.enable.dsl=2
 
 params.plink_file     = "${params.plink_file ?: ''}"
 params.king_ref       = "${params.king_ref   ?: ''}"
-params.genome_version = "${params.genome_version ?: 'GRCh37'}" // default to GRCh37
+params.genome_version = "${params.genome_version ?: 'GRCh38'}" // default to GRCh38
 
 
 // ----------------------------------------------------------------------
@@ -194,10 +194,14 @@ workflow {
 
     publish:
     merged_file = merged_ch
+    report_summary = buildSummary.out
 }
 
 output {
     merged_file {
+        mode 'copy'
+    }
+    report_summary {
         mode 'copy'
     }
 }

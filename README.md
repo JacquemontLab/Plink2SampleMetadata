@@ -32,7 +32,7 @@ You might need to pull the following containers if working **offline**:
 | ------------------ | --------------------------------------------------- | ---------- |
 | `--plink_file`     | Path prefix of PLINK dataset (.bed/.bim/.fam)       | *Required* |
 | `--king_ref`       | Path to KING reference directory                    | *Required* |
-| `--genome_version` | Genome version for PCA analysis (`GRCh37`/`GRCh38`) | GRCh37     |
+| `--genome_version` | Genome version for PCA analysis (`GRCh37`/`GRCh38`) | GRCh38     |
 
 
 ## Usage
@@ -59,8 +59,6 @@ container=docker # or apptainer or singularity
 
 nextflow run https://github.com/JacquemontLab/Plink2SampleMetadata.git -profile test,${container}
 ```
-
-<!-- nextflow run main.nf -profile test,${container} -->
 
 ## Example
 
@@ -95,8 +93,8 @@ Below is a description of each column:
 
 ```tsv
 SampleID    Call_Rate   Sex    FatherID   MotherID   FamilyID   PC1    PC2   ...   PC10   Ancestry
-SP000XXXX   0.97516     female                     -0.0101  0.0274 ... -0.0016  EUR
-SP000XXXY   0.97283     male   SP000XXXA  SP000XXXB Family2770 -0.0099  0.0272 ... -0.0017  EUR
+ID1   0.97516     female                     -0.0101  0.0274 ... -0.0016  EUR
+ID2   0.97283     male   ID3  ID7 Family2770 -0.0099  0.0272 ... -0.0017  EUR
 ```
 
 

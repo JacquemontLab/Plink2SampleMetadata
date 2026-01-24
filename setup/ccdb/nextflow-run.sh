@@ -10,7 +10,7 @@
 
 
 ################################################################################
-# Script: run_plink_metadata.sh
+# Script: nextflow-run.sh
 #
 # Description:
 #   SLURM submission script to run a Nextflow workflow that infers
@@ -26,10 +26,10 @@
 #   - KING reference data directory available
 #
 # Usage:
-#   sbatch run_plink_metadata.sh <plink_file_prefix>
+#   sbatch nextflow-run.sh <plink_file_prefix>
 #
 # Example:
-#   sbatch run_plink_metadata.sh \
+#   sbatch nextflow-run.sh \
 #          /lustre09/project/6008022/flben/Ancestry_SPARK/iWGS1.1/merged_plink/sample_data
 ################################################################################
 
