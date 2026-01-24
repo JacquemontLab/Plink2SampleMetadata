@@ -1,0 +1,35 @@
+# Use micromamba base image
+FROM mambaorg/micromamba:2-ubuntu22.04
+
+# Labels
+LABEL maintainer="Benjamin Clark" \
+      description="Docker image with KING, PLINK, R packages, Polars, and liftOver installed via conda for use with the plink2SampleMetaData pipeline"
+
+# Switch to root to install system packages
+USER root
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends procps wget curl ca-certificates git && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch back to micromamba user
+USER $MAMBA_USER
+
+# Install conda packages
+RUN micromamba install -y -c bioconda -c conda-forge \
+        r-base=3.6 \
+        king \
+        plink \
+        r-doparallel \
+        r-ggplot2 \
+        r-e1071 \
+        polars \
+        ucsc-liftover && \
+    micromamba clean --all --yes
+
+# Set environment variable
+ENV PATH=/opt/conda/bin:$PATH
+
+# Default command
+CMD ["/bin/bash"]
