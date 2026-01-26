@@ -119,30 +119,3 @@ fi
 
 rm *_intermediate* *_filter* hg19ToHg38.over.chain.gz KGref_unmapped.bed KGref_GRCh37_map.bed KGref_GRCh38_SNP_Chr_map.tsv KGref_GRCh38_SNP_pos_map.tsv KGref_GRCh38_SNP_selection.txt
 rm *_update*
-
-######### TO CHECK GENOME REFERENCE
-
-## Genome check reference nucleotides
-# wget https://hgdownload.soe.ucsc.edu/goldenpath/hg38/bigZips/hg38.fa.gz
-# wget https://hgdownload.soe.ucsc.edu/goldenpath/hg19/bigZips/hg19.fa.gz
-# gunzip hg38.fa.gz
-# gunzip hg19.fa.gz
-
-# # King on verion GRCh38
-# awk -v OFS='\t' '{print $1":"$4"-"$4}' KGref_GRCh38.bim > coord_hg38
-
-# module load samtools
-# samtools faidx hg38.fa -r coord_hg38 | grep -v ">" | tr '[:lower:]' '[:upper:]' > ref.txt
-
-# paste <(cut -f5-6 KGref_GRCh38.bim) ref.txt | awk '$3 != $1 && $3 != $2' | wc -l
-
-
-# # King on verion GRCh37
-# awk -v OFS='\t' '{print $1":"$4"-"$4}' KGref.bim > coord_hg37
-# sed -i 's/^/chr/' coord_hg37
-
-# module load samtools
-# samtools faidx hg19.fa -r coord_hg37 | grep -v ">" | tr '[:lower:]' '[:upper:]' > ref.txt
-
-# paste <(cut -f5-6 KGref.bim) ref.txt | awk '$3 != $1 && $3 != $2' | wc -l
-
