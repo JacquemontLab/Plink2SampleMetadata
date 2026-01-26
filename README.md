@@ -62,7 +62,7 @@ container=docker # or apptainer or singularity
 nextflow run main.nf -profile test,${container}
 ```
 
-## Example
+### Example
 
 ```bash
 plink_file=tests/plink
