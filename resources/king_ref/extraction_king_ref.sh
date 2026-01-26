@@ -117,7 +117,8 @@ if [[ "$genome_version" == "GRCh38" ]]; then
     plink --bfile KGref_GRCh38_filter_update_position --update-name name_to_update.tsv --make-bed --out KGref_GRCh38_final --memory ${mem_MB} --threads ${cpus}
 fi
 
-rm *_intermediate* *_filter* *_update* hg19ToHg38.over.chain.gz KGref_unmapped.bed KGref_GRCh37_map.bed KGref_GRCh38_SNP_Chr_map.tsv KGref_GRCh38_SNP_pos_map.tsv KGref_GRCh38_SNP_selection.txt
+rm *_intermediate* *_filter* hg19ToHg38.over.chain.gz KGref_unmapped.bed KGref_GRCh37_map.bed KGref_GRCh38_SNP_Chr_map.tsv KGref_GRCh38_SNP_pos_map.tsv KGref_GRCh38_SNP_selection.txt
+rm *_update*
 
 ######### TO CHECK GENOME REFERENCE
 
