@@ -41,7 +41,7 @@ You might need to pull the following containers if working **offline**:
 
 ### Download required KING reference files
 
-From the root directory of the repository, run the following command to install the KING reference data in `./resources/king_ref/`
+From the root directory of the repository, run the following command to save the KING reference data in `./resources/king_ref/`
 (plink and liftOver are provided by the Docker image):
 
 ```bash
