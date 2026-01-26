@@ -65,7 +65,7 @@ nextflow run main.nf -profile test,${container}
 ### Example
 
 ```bash
-plink_file=tests/plink
+plink_file=${PWD}/tests/plink
 
 nextflow run main.nf \
     --plink_file "$plink_file" \
