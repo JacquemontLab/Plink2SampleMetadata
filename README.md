@@ -26,19 +26,6 @@ Required software:
 You might need to pull the following containers if working **offline**:
 * **docker://ghcr.io/jacquemontlab/plink2metadata:latest**
 
-
-
-## Inputs
-
-| Parameter          | Description                                         | Default    |
-| ------------------ | --------------------------------------------------- | ---------- |
-| `--plink_file`     | Path prefix of PLINK dataset (.bed/.bim/.fam)       | *Required* |
-| `--king_ref`       | Path to KING reference directory                    | *Required* |
-| `--genome_version` | Genome version for PCA analysis (`GRCh37`/`GRCh38`) | GRCh38     |
-
-
-## Usage
-
 ### Download required KING reference files
 
 From the root directory of the repository, run the following command to save the KING reference data in `./resources/king_ref/`
@@ -51,6 +38,18 @@ docker run --rm -it \
   ghcr.io/jacquemontlab/plink2metadata:latest \
   bash INSTALL.sh
 ```
+
+
+## Inputs
+
+| Parameter          | Description                                         | Default    |
+| ------------------ | --------------------------------------------------- | ---------- |
+| `--plink_file`     | Path prefix of PLINK dataset (.bed/.bim/.fam)       | *Required* |
+| `--king_ref`       | Path to KING reference directory                    | *Required* |
+| `--genome_version` | Genome version for PCA analysis (`GRCh37`/`GRCh38`) | GRCh38     |
+
+
+## Usage
 
 ### Testing
 
