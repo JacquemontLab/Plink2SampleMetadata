@@ -1,0 +1,28 @@
+
+// To launch the test on local :
+// nf-test test tests/main.nf.test --profile test,apptainer
+
+
+nextflow_pipeline {
+
+    name "Test"
+    script "main.nf"
+
+    test("Full run should exit without errors") {
+
+        when {
+            params {
+             king_ref = "${projectDir}/resources/king_ref/"
+             plink_file = "${projectDir}/tests/plink"
+             genome_version = "GRCh38"
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert file("$launchDir/results/sample_metadata_from_plink.tsv").exists()
+            assert file("$launchDir/results/launch_report.txt").exists()
+        }
+    }
+}
+

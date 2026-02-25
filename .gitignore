@@ -4,6 +4,7 @@ results/
 output/
 logs/
 .nextflow/
+.nf-test/
 
 # Ignore test folders and files
 *.log
