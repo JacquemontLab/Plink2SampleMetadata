@@ -1,4 +1,4 @@
-[![Jacquemont's Lab Header](labheader.png)](https://www.jacquemont-lab.org/)
+[![Jacquemont's Lab Header](img/labheader.png)](https://www.jacquemont-lab.org/)
 
 [Git Repository Plink2SampleMetadata](https://github.com/JacquemontLab/Plink2SampleMetadata)
 
@@ -100,6 +100,9 @@ ID2   0.97283     male   ID3  ID7 Family2770 -0.0099  0.0272 ... -0.0017  EUR
 
 
 ## Workflow Structure
+<picture>
+  <img src="img/Plink2SampleMetadata.png" style="max-width:55%; height:auto;">
+</picture>
 
 ### Processes
 
