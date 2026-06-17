@@ -44,6 +44,8 @@ process infer_trio {
 
     script:
     """
+    echo "CPUs: ${task.cpus}"
+    export SLURM_CPUS_ON_NODE=${task.cpus}
     infer_king_trios.py ${plink_prefix} trio_inference.tsv
     """
 }
@@ -66,6 +68,8 @@ process infer_pca {
 
     script:
     """
+    echo "CPUs: ${task.cpus}"
+    export SLURM_CPUS_ON_NODE=${task.cpus}
     run_king_pca.sh ${plink_prefix} ${king_ref_directory} pca_inference.tsv ${genome_version}
     """
 }
