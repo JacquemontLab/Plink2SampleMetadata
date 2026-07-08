@@ -10,7 +10,7 @@ def merge_tsv(files, output, join_type="full"):
         print("Error: No input files provided.")
         sys.exit(1)
 
-    dfs = [pl.read_csv(f, separator="\t") for f in files]
+    dfs = [pl.read_csv(f,infer_schema_length=10000, separator="\t") for f in files]
 
     for i, df in enumerate(dfs):
         if "SampleID" not in df.columns:

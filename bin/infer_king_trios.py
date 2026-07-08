@@ -125,7 +125,8 @@ family_king = family_king.filter(pl.col("InfType") != "UN")
 plink_sexcheck = (
     pl.read_csv(
         "temp_plink_sexcheck.sexcheck.tsv",
-        separator="\t"
+        separator="\t",
+        infer_schema_length=10000
     )
     .select(["IID","SNPSEX"])   # IID and SNPSEX columns
 )
